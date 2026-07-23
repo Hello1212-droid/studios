@@ -1,0 +1,8 @@
+- 2026-06-14:
+  - Updated `main.cjs` to set `IS_KIOSK` to `false` based on user request to open in kiosk mode off.
+  - Launched the application using `npm run start-os`.
+- 2026-07-09:
+  - Checked Git repository status; the workspace is not currently initialized as a git repository.
+  - User requested repository creation and file upload.
+  - Advised to revoke leaked PAT.
+  - Initiated local repository initialization and verified GitHub CLI status.

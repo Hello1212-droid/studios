@@ -1,0 +1,20 @@
+{
+  "name": "kiosk-overlay-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "build-native": "node-gyp rebuild --directory native"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^41.3.0"
+  },
+  "dependencies": {
+    "node-addon-api": "^8.7.0"
+  }
+}

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.kilo/
+nul
+.DS_Store
+*.log
+.env
+.env.local
+.vite/
+*.local
