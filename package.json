@@ -1,15 +1,15 @@
 {
-  "name": "react-vite-tailwind",
+  "name": "studios",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "StudyOS — A hyper-focused desktop environment with Hyperbeam cloud browser for competitive exam preparation",
   "type": "module",
-  "main": "main.cjs",
   "scripts": {
     "dev": "vite",
-    "start": "electron .",
-    "start-os": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && npm start\"",
+    "proxy": "node proxy-server.cjs",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && npx gh-pages -d dist -r https://github.com/Hello1212-droid/studios.git"
   },
   "dependencies": {
     "clsx": "2.1.1",
@@ -17,7 +17,6 @@
     "framer-motion": "^12.38.0",
     "groq-sdk": "^1.2.0",
     "lucide-react": "^1.8.0",
-    "node-addon-api": "^8.7.0",
     "openai": "^6.37.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -27,16 +26,13 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.1.17",
-    "@types/node": "22.19.17",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "5.1.1",
-    "concurrently": "^9.2.1",
-    "electron": "^41.3.0",
+    "gh-pages": "^6.3.0",
     "tailwindcss": "4.1.17",
     "typescript": "5.9.3",
     "vite": "7.2.4",
-    "vite-plugin-singlefile": "2.3.0",
-    "wait-on": "^9.0.5"
+    "vite-plugin-singlefile": "2.3.0"
   }
 }

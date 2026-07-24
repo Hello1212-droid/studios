@@ -1,15 +1,59 @@
 <!doctype html>
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║                    STUDYOS — HTML SHELL                       ║
+║                                                              ║
+║  This is the single HTML file that boots the entire app.     ║
+║  Vite + vite-plugin-singlefile inlines ALL React/JS/CSS      ║
+║  into this file during build, making it fully self-contained. ║
+║                                                              ║
+║  Hyperbeam CDN script is injected post-build by a custom     ║
+║  Vite plugin (see vite.config.ts → injectHyperbeamScript).   ║
+║                                                              ║
+║  Fonts: Inter from Google Fonts (only external dependency).  ║
+╚══════════════════════════════════════════════════════════════╝
+-->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!--
+      viewport: Ensures proper scaling on all devices.
+      The app is designed for desktop, but this keeps the
+      CSS pixel ratio correct.
+    -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      Title shown in the browser tab.
+      The Electron app (when used) overrides this via the BrowserWindow title.
+    -->
     <title>StudyOS — Your Productivity Desktop</title>
+
+    <!--
+      Inter font: Primary typeface for the entire app.
+      Weights: 300 (light), 400 (regular), 500 (medium), 600 (semibold), 700 (bold).
+      Preconnect hints speed up font loading by starting the DNS/TLS early.
+    -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <!--
+      #root: React mounts here via createRoot() in src/main.tsx.
+      Everything inside this div is managed by React.
+    -->
     <div id="root"></div>
+
+    <!--
+      Vite entry point: Loads src/main.tsx as an ES module.
+      During build, vite-plugin-singlefile inlines the bundled code
+      directly into this file, so the final dist/index.html has
+      no external JS references.
+    -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

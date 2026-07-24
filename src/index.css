@@ -1,33 +1,77 @@
+/**
+ * ╔══════════════════════════════════════════════════════════════╗
+ * ║              STUDYOS — GLOBAL STYLES (Tailwind 4)             ║
+ * ║                                                              ║
+ * ║  @import "tailwindcss" brings in Tailwind CSS 4.             ║
+ * ║  Tailwind 4 uses CSS-first configuration (no tailwind.config) ║
+ * ║                                                              ║
+ * ║  Design system:                                              ║
+ * ║    • Dark-only theme (#0a0a0a base)                          ║
+ * ║    • Glassmorphism panels (.glass, .glass-dark, .glass-lighter)║
+ * ║    • macOS-style dock, windows, and status bar                ║
+ * ║    • Inter font (from Google Fonts in index.html)            ║
+ * ║    • Custom scrollbars, selection color, drag handles        ║
+ * ╚══════════════════════════════════════════════════════════════╝
+ */
+
 @import "tailwindcss";
 
+/**
+ * ── Box Sizing Reset ───────────────────────────────────────────
+ * border-box on everything means padding/border are included
+ * in width/height calculations — much more intuitive.
+ */
 * {
   box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;    /* Smoother text on macOS */
+  -moz-osx-font-smoothing: grayscale;      /* Smoother text on Firefox/macOS */
 }
 
+/**
+ * ── Body Base ─────────────────────────────────────────────────
+ * Full viewport, no scrolling, dark background.
+ * font-family stack: Inter → system font fallbacks.
+ */
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
-  background: #0a0a0a;
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
+  background: #0a0a0a;          /* Near-black dark theme */
+  overflow: hidden;              /* No page scrolling — all content is in windows */
+  height: 100vh;                 /* Full viewport height */
+  width: 100vw;                  /* Full viewport width */
 }
 
+/**
+ * ── Root Container ────────────────────────────────────────────
+ * Must match body — the React root fills the entire screen.
+ */
 #root {
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
+  overflow: hidden;              /* Prevent double scrollbars */
 }
 
-/* Glassmorphism utilities */
+/* ═══════════════════════════════════════════════════════════════
+   GLASSMORPHISM UTILITIES
+   ───────────────────────────────────────────────────────────────
+   Three levels of glass effect used throughout the app.
+   All use backdrop-filter: blur() for the frosted-glass look.
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * .glass — Standard glass panel
+ * 8% white background + 20px blur. Used for cards, dock background, etc.
+ */
 .glass {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);   /* Safari support */
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+/**
+ * .glass-dark — Darker glass panel
+ * Used for control center, dropdowns, and overlay panels.
+ */
 .glass-dark {
   background: rgba(15, 15, 15, 0.75);
   backdrop-filter: blur(24px);
@@ -35,6 +79,10 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/**
+ * .glass-lighter — Brighter glass panel
+ * Used for notifications and floating elements that need more contrast.
+ */
 .glass-lighter {
   background: rgba(255, 255, 255, 0.13);
   backdrop-filter: blur(16px);
@@ -42,48 +90,79 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-/* Custom scrollbar */
+/* ═══════════════════════════════════════════════════════════════
+   CUSTOM SCROLLBARS
+   ───────────────────────────────────────────────────────────────
+   Thin, transparent scrollbars that match the dark theme.
+   Applies globally via ::-webkit-scrollbar pseudo-elements.
+   ═══════════════════════════════════════════════════════════════ */
+
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 6px;                    /* Thin scrollbar */
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: transparent;       /* Invisible track */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);   /* Semi-visible thumb */
+  border-radius: 3px;                     /* Rounded thumb ends */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.35);  /* Brighter on hover */
 }
 
-/* Dock */
+/* ═══════════════════════════════════════════════════════════════
+   macOS-STYLE DOCK
+   ───────────────────────────────────────────────────────────────
+   Dock items have a spring animation on hover.
+   cubic-bezier(0.34, 1.56, 0.64, 1) creates an overshoot effect.
+   ═══════════════════════════════════════════════════════════════ */
+
 .dock-item {
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .dock-item:hover {
-  transform: translateY(-12px) scale(1.25);
+  transform: translateY(-12px) scale(1.25);   /* Lift + enlarge on hover */
 }
 
-/* Progress ring */
+/* ═══════════════════════════════════════════════════════════════
+   PROGRESS RING (STUDY SESSION TIMER)
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * The SVG circle progress indicator used in StudySession.tsx.
+ * Rotated -90deg so progress starts from the 12 o'clock position.
+ * The dashoffset is animated by React state (timeLeft / totalTime).
+ */
 .progress-ring-circle {
   transition: stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 }
 
-/* Window drag handle */
+/* ═══════════════════════════════════════════════════════════════
+   WINDOW TITLE BAR (DRAG HANDLE)
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * The window title bar is the drag handle for moving windows.
+ * cursor: move signals it's draggable.
+ * user-select: none prevents text selection during drag.
+ */
 .window-titlebar {
   cursor: move;
   user-select: none;
 }
 
-/* iframe container */
+/* ═══════════════════════════════════════════════════════════════
+   BROWSER IFRAME
+   ═══════════════════════════════════════════════════════════════ */
+
 .browser-iframe {
   width: 100%;
   height: 100%;
@@ -91,9 +170,12 @@ body {
   background: #fff;
 }
 
-/* Notification pulse */
+/* ═══════════════════════════════════════════════════════════════
+   NOTIFICATION PULSE ANIMATION
+   ═══════════════════════════════════════════════════════════════ */
+
 @keyframes pulse-ring {
-  0% { transform: scale(0.8); opacity: 0.8; }
+  0%   { transform: scale(0.8); opacity: 0.8; }
   100% { transform: scale(1.4); opacity: 0; }
 }
 
@@ -101,7 +183,10 @@ body {
   animation: pulse-ring 1.5s ease-out infinite;
 }
 
-/* Glow effects */
+/* ═══════════════════════════════════════════════════════════════
+   GLOW EFFECTS
+   ═══════════════════════════════════════════════════════════════ */
+
 .blue-glow {
   box-shadow: 0 0 20px rgba(0, 122, 255, 0.3), 0 0 60px rgba(0, 122, 255, 0.1);
 }
@@ -110,7 +195,14 @@ body {
   box-shadow: 0 0 20px rgba(245, 158, 11, 0.3), 0 0 60px rgba(245, 158, 11, 0.1);
 }
 
-/* Tab close button */
+/* ═══════════════════════════════════════════════════════════════
+   BROWSER TAB CLOSE BUTTON
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * The X (close) button on browser tabs is hidden by default
+ * and appears on hover (via the .group-hover:opacity-100 pattern).
+ */
 .tab-close {
   opacity: 0;
   transition: opacity 0.15s ease;
@@ -120,33 +212,63 @@ body {
   opacity: 1;
 }
 
-/* Hide scrollbar but keep scrolling */
+/* ═══════════════════════════════════════════════════════════════
+   HIDE SCROLLBAR BUT KEEP SCROLLING
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * .no-scrollbar hides the scrollbar but lets the element remain scrollable.
+ * Firefox uses scrollbar-width, WebKit uses the pseudo-element.
+ */
 .no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: none;       /* IE/Edge */
+  scrollbar-width: none;          /* Firefox */
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none;                  /* Chrome/Safari */
 }
 
-/* Selection */
+/* ═══════════════════════════════════════════════════════════════
+   TEXT SELECTION
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Custom blue selection color matching the app's accent.
+ */
 ::selection {
   background: rgba(0, 122, 255, 0.3);
   color: #fff;
 }
 
-/* Input styles */
+/* ═══════════════════════════════════════════════════════════════
+   INPUT/SEARCH FOCUS
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Remove default browser outline on focused inputs.
+ * We use custom border-color transitions for focus states instead.
+ */
 input:focus, textarea:focus {
   outline: none;
 }
 
-/* Smooth transitions */
+/* ═══════════════════════════════════════════════════════════════
+   SMOOTH TRANSITIONS HELPER
+   ═══════════════════════════════════════════════════════════════ */
+
 .smooth-transition {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Desktop icons */
+/* ═══════════════════════════════════════════════════════════════
+   DESKTOP ICONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Desktop shortcut icons in the top-right corner.
+ * On hover: subtle glass background appears (macOS "highlight on hover" effect).
+ */
 .desktop-icon {
   transition: all 0.2s ease;
 }
@@ -156,12 +278,22 @@ input:focus, textarea:focus {
   backdrop-filter: blur(10px);
 }
 
-/* Calendar day hover */
+/* ═══════════════════════════════════════════════════════════════
+   CALENDAR DAY HOVER
+   ═══════════════════════════════════════════════════════════════ */
+
 .cal-day:hover {
   background: rgba(0, 122, 255, 0.15) !important;
 }
 
-/* Status bar */
+/* ═══════════════════════════════════════════════════════════════
+   STATUS BAR (macOS-STYLE MENU BAR)
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Fixed top bar: 28px tall, black semi-transparent, blurred backdrop.
+ * Contains: Apple-style menu, app name, date/time, battery.
+ */
 .status-bar {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(20px);
@@ -169,7 +301,16 @@ input:focus, textarea:focus {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Window shadow */
+/* ═══════════════════════════════════════════════════════════════
+   WINDOW SHADOW (macOS-STYLE)
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Multi-layered shadow for the macOS-like window.
+ *   Layer 1: 1px inner border (glass edge)
+ *   Layer 2: Close shadow (8px blur, dark)
+ *   Layer 3: Far shadow (32px blur, very dark)
+ */
 .window-shadow {
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.08),
@@ -177,14 +318,25 @@ input:focus, textarea:focus {
     0 32px 64px rgba(0, 0, 0, 0.4);
 }
 
-/* Tooltip */
+/* ═══════════════════════════════════════════════════════════════
+   TOOLTIP
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Tooltips must not capture pointer events —
+ * otherwise they block clicks on elements beneath them.
+ */
 .tooltip {
   pointer-events: none;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   FADE IN UP ANIMATION
+   ═══════════════════════════════════════════════════════════════ */
+
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .fade-in-up {
